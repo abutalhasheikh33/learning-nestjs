@@ -4,6 +4,7 @@ import { plainToClass, plainToInstance } from 'class-transformer';
 import { User as UserEntity } from 'src/typeorm';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { SerializedUser, User } from 'src/users/types/User';
+import { hashPassword } from 'src/utils/bcrypt';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -46,7 +47,16 @@ export class UsersService {
     }
 
     createUser(createUserDto : CreateUserDto){
-        const newUser = this.userRepository.create(createUserDto);
+        const password = hashPassword(createUserDto.password)
+        const newUser = this.userRepository.create({...createUserDto,password});
         return this.userRepository.save(newUser);
+    }
+
+    findUserByUsername(username : string){
+        return this.userRepository.findOne({
+            where:{
+                username
+            }
+        })
     }
 }
