@@ -1,4 +1,5 @@
-import { Controller, Inject,Get,Param, HttpException, HttpStatus, UseInterceptors, ClassSerializerInterceptor, ParseIntPipe, UseFilters, Body, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Inject,Get,Param, HttpException, HttpStatus, UseInterceptors, ClassSerializerInterceptor, ParseIntPipe, UseFilters, Body, Post, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
+import { AuthenticatedGuard, LocalAuthGuard } from 'src/auth/utils/LocalGuard';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UserNotFoundException } from 'src/users/exceptions/UserNotFound.exception';
 import { HttpExceptionFilter } from 'src/users/filters/HttpException.filter';
@@ -9,7 +10,7 @@ import { SerializedUser } from 'src/users/types/User';
 export class UsersController {
     constructor(@Inject('USER_SERVICE') private readonly userService : UsersService){}
 
-
+    @UseGuards(AuthenticatedGuard)
     @Get('')
     getUsers(){
         return this.userService.getUsers()

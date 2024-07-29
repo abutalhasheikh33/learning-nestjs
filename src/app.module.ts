@@ -3,7 +3,8 @@ import { CustomersModule } from './customers/customers.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import entities from './typeorm';
+import entities, { Session } from './typeorm';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [CustomersModule, UsersModule, TypeOrmModule.forRoot({
@@ -15,7 +16,12 @@ import entities from './typeorm';
     database: 'tutorial_db',
     entities: entities,
     synchronize:true
-  }), AuthModule],
+  }), TypeOrmModule.forFeature([Session]),AuthModule,
+  PassportModule.register({
+    session: true,
+
+  })
+],
   controllers: [],
   providers: [],
 })

@@ -59,4 +59,12 @@ export class UsersService {
             }
         })
     }
+
+    findUserById(id : number ){
+        return this.userRepository.findOne({
+            where:{
+                _id:id
+            }
+        })
+    }
 }

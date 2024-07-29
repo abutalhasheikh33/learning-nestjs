@@ -6,6 +6,7 @@ import { comparePasswords } from 'src/utils/bcrypt';
 export class AuthService {
     constructor(@Inject('USER_SERVICE') private readonly userService : UsersService){}
     async validateUser(username : string,password : string){
+        console.log("Inside Validate User")
         const userDB = await this.userService.findUserByUsername(username);
         if(userDB ){
             const matched = comparePasswords(password,userDB.password);
